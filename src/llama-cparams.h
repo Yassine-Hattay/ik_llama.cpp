@@ -49,6 +49,11 @@ struct llama_cparams {
     bool mtp;
     int  worst_graph_tokens;
 
+    // Adaptive sparse V thresholds
+    bool use_adaptive_sparse_v = false;       // enable per-head adaptive sparse V thresholds
+    float sparse_v_error_budget = 0.001f;     // max cosine error for threshold calibration (0.1%)
+    int   sparse_v_warmup_tokens = 128;       // tokens to collect stats before inference
+
     enum ggml_type reduce_type;
     enum llama_pooling_type pooling_type;
     enum llama_mtp_op_type mtp_op_type;

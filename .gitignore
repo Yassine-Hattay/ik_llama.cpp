@@ -1,147 +1,46 @@
-# Extensions
-
-*.a
-*.bat
-*.bin
-*.dll
-*.dot
-*.etag
-*.exe
-*.gcda
-*.gcno
-*.gcov
-*.gguf
-*.gguf.json
-*.lastModified
-*.log
-*.metallib
+```
+# Compiled and binary files
 *.o
+*.obj
+*.exe
+*.dll
 *.so
+*.a
+*.out
+
+# Build directories
+build/
+dist/
+target/
+
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.gradle/
+
+# Editors and IDEs
+.vscode/
+.idea/
 *.swp
+*.swo
 *.tmp
 
-# IDE / OS
-
-.cache/
-.ccls-cache/
-.direnv/
-.DS_Store
-.envrc
-.idea/
-.swiftpm
-.vs/
-.vscode/
-nppBackup
-
+# Logs
+*.log
 
 # Coverage
+coverage/
+htmlcov/
+.coverage
 
-gcovr-report/
-lcov-report/
-
-# Build Artifacts
-
-tags
-.build/
-build*
-!build-info.cmake
-!build-info.cpp.in
-!build-info.sh
-!build.zig
-!docs/build.md
-!scripts/build-*.sh
-!scripts/build-*.bat
-/libllama.so
-/llama-*
-/vulkan-shaders-gen
-android-ndk-*
-arm_neon.h
-cmake-build-*
-CMakeSettings.json
-compile_commands.json
-ggml-metal-embed.metal
-llama-batched-swift
-/rpc-server
-out/
-tmp/
-
-# Deprecated
-
-/main
-/server
-
-# CI
-
-!.github/workflows/*.yml
-
-# Models
-
-models/*
-models-mnt
-!models/.editorconfig
-!models/ggml-vocab-*.gguf*
-
-# Zig
-zig-out/
-zig-cache/
-
-# Logs
-
-ppl-*.txt
-qnt-*.txt
-perf-*.txt
-
-# Examples
-
-examples/jeopardy/results.txt
-examples/server/*.css.hpp
-examples/server/*.html.hpp
-examples/server/*.js.hpp
-examples/server/*.mjs.hpp
-!build_64.sh
-!examples/*.bat
-!examples/*/*.kts
-!examples/*/*/*.kts
-!examples/sycl/*.bat
-!examples/sycl/*.sh
-
-# Python
-
-/.venv
-__pycache__/
-*/poetry.lock
-poetry.toml
-
-# Nix
-/result
-
-# Test binaries
-/tests/test-backend-ops
-/tests/test-double-float
-/tests/test-grad0
-/tests/test-grammar-parser
-/tests/test-llama-grammar
-/tests/test-opt
-/tests/test-quantize-fns
-/tests/test-quantize-perf
-/tests/test-rope
-/tests/test-sampling
-/tests/test-tokenizer-0
-/tests/test-tokenizer-1-bpe
-/tests/test-tokenizer-1-spm
-
-# Scripts
-!/scripts/install-oneapi.bat
-/examples/server/webui_llamacpp/.gitignore
-
-# Test models for lora adapters
-/lora-tests
-
-# Local scripts
-/run-vim.sh
-/run-chat.sh
-.ccache/
-
-# IDE
-*.code-workspace
-.windsurf/
+# System files
+.DS_Store
+Thumbs.db
+.env
+.env.local
+*.env.*
+```

@@ -1413,6 +1413,20 @@ bool gpt_params_find_arg(int argc, char ** argv, const std::string & arg, gpt_pa
         }
         return true;
     }
+    if (arg == "--sparse-v-adaptive") {
+        params.use_adaptive_sparse_v = true;
+        return true;
+    }
+    if (arg == "--sparse-v-error") {
+        CHECK_ARG
+        params.sparse_v_error_budget = std::stof(argv[i]);
+        return true;
+    }
+    if (arg == "--sparse-v-warmup") {
+        CHECK_ARG
+        params.sparse_v_warmup_tokens = std::stoi(argv[i]);
+        return true;
+    }
     if (arg == "-mla" || arg == "--mla-use") {
         CHECK_ARG
         params.mla_attn = std::stoi(argv[i]);

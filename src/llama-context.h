@@ -66,6 +66,16 @@ struct llama_kv_cache {
     std::vector<llama_split_tensor> split_v_l;
     std::vector<llama_split_tensor> split_s_l;
 
+    // Adaptive sparse V thresholds: [n_layer][n_kv_head]
+    std::vector<std::vector<float>> sparse_v_thresholds;
+    bool use_adaptive_sparse_v = false;
+    
+    // Calibration state
+    struct {
+        bool calibrated = false;
+        int warmup_tokens = 0;
+    } sparse_v_calib;
+
     std::vector<struct ggml_context *> ctxs;
     std::vector<ggml_backend_buffer_t> bufs;
 
