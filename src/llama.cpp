@@ -1067,6 +1067,21 @@ static bool llama_kv_cache_init(
         GGML_ABORT("fatal error");
     }
 
+    // Initialize adaptive sparse V thresholds if enabled
+    if (cparams.use_adaptive_sparse_v) {
+        cache.use_adaptive_sparse_v = true;
+        cache.sparse_v_thresholds.clear();
+        cache.sparse_v_thresholds.reserve(n_layer);
+        for (int i = 0; i < (int) n_layer; i++) {
+            const uint32_t n_head_kv = hparams.n_head_kv(i);
+            std::vector<float> layer_thresholds(n_head_kv, 1e-6f); // default uniform threshold
+            cache.sparse_v_thresholds.push_back(layer_thresholds);
+        }
+        cache.sparse_v_calib.calibrated = false;
+        cache.sparse_v_calib.warmup_tokens = 0;
+        LLAMA_LOG_INFO("%s: adaptive sparse V thresholds initialized (%d layers)\n", __func__, n_layer);
+    }
+
     // allocate tensors and initialize the buffers to avoid NaNs in the padding
     for (auto it : ctx_map) {
         ggml_backend_buffer_type_t buft = it.first;

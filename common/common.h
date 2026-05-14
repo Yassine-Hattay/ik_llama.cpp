@@ -388,6 +388,11 @@ struct gpt_params {
     int  fused_delta_net   = 0;     // use fused delta-net if number of tokens in the batch is less than this value
     bool has_mtp           = false; // enable MTP if supported by the model
 
+    // Adaptive sparse V thresholds
+    bool  use_adaptive_sparse_v = false;  // enable per-head adaptive sparse V thresholds
+    float sparse_v_error_budget = 0.001f; // max cosine error for threshold calibration (0.1%)
+    int   sparse_v_warmup_tokens = 128;   // tokens to collect stats before inference
+
     std::string cache_type_k = "f16"; // KV cache data type for the K
     std::string cache_type_v = "f16"; // KV cache data type for the V
 
