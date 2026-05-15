@@ -2509,9 +2509,6 @@ void gpt_params_print_usage(int /*argc*/, char ** argv, const gpt_params & param
     options.push_back({ "*",           "       --chunks N",             "max number of chunks to process (default: %d, -1 = all)", params.n_chunks });
     options.push_back({ "*",           "-no-fa, --no-flash-attn",       "disable Flash Attention (default: %s)", params.flash_attn ? "enabled" : "disabled" });
     options.push_back({ "*",           "-fa, --flash-attn (auto|on|off|0|1)", "set Flash Attention (default: %s)", params.flash_attn ? "on" : "off" });
-    options.push_back({ "*",           "--sparse-v-adaptive",         "enable per-head adaptive sparse V thresholds (default: %s)", params.use_adaptive_sparse_v ? "enabled" : "disabled" });
-    options.push_back({ "*",           "--sparse-v-error N",          "max cosine error for threshold calibration (default: %.4f)", params.sparse_v_error_budget });
-    options.push_back({ "*",           "--sparse-v-warmup N",         "tokens to collect stats before inference (default: %d)", params.sparse_v_warmup_tokens });
     options.push_back({ "*",           "-mla,  --mla-use",              "enable MLA (default: %d)", params.mla_attn });
     options.push_back({ "*",           "-amb,  --attention-max-batch",  "max batch size for attention computations (default: %d)", params.attn_max_batch});
     options.push_back({ "*",           "-no-fmoe, --no-fused-moe",      "disable fused MoE (default: %s)", params.fused_moe_up_gate ? "enabled" : "disabled" });
@@ -3698,11 +3695,6 @@ struct llama_context_params common_context_params_to_llama(const gpt_params & pa
     cparams.max_extra_alloc   = params.max_extra_alloc_MiB;
     cparams.mtp               = params.has_mtp;
     cparams.mtp_op_type      = MTP_OP_NONE;
-
-    // Adaptive sparse V thresholds
-    cparams.use_adaptive_sparse_v     = params.use_adaptive_sparse_v;
-    cparams.sparse_v_error_budget     = params.sparse_v_error_budget;
-    cparams.sparse_v_warmup_tokens    = params.sparse_v_warmup_tokens;
 
     cparams.type_k = kv_cache_type_from_str(params.cache_type_k);
     cparams.type_v = kv_cache_type_from_str(params.cache_type_v);

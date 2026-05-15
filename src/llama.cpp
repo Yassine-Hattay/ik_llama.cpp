@@ -1130,63 +1130,6 @@ static bool llama_kv_cache_init(
     return true;
 }
 
-// Calibrate per-head sparse V thresholds via binary search
-// Called once after model load, before inference
-static void llama_kv_cache_calibrate_sparse_v(llama_context & ctx) {
-    auto & kv_self = ctx.kv_self;
-    const auto & hparams = ctx.model.hparams;
-    const auto & cparams = ctx.cparams;
-    
-    if (!cparams.use_adaptive_sparse_v || kv_self.sparse_v_thresholds.empty()) {
-        return;  // feature disabled or not allocated
-    }
-    
-    const float error_budget = cparams.sparse_v_error_budget;  // default 0.001f (0.1%)
-    const int64_t n_layer = hparams.n_layer;
-    
-    LLAMA_LOG_INFO("%s: calibrating sparse V thresholds for %d layers (error budget=%.4f)...\n", 
-                   __func__, n_layer, error_budget);
-    
-    // For each layer and KV head, compute optimal threshold via binary search
-    // This is a simplified implementation - in production, this would sample actual attention weights
-    // from a warmup forward pass and compute reconstruction error
-    
-    // TODO: Implement full calibration using attention weight sampling during warmup
-    // For now, initialize with uniform threshold (fallback behavior)
-    // The Python reference implementation uses:
-    // 1. Run warmup forward pass (128 tokens)
-    // 2. For each layer/head, extract attention weights at last query position
-    // 3. Binary search threshold T in [1e-10, 5e-2] for 40 iterations
-    // 4. Accept T if cosine(V_full, V_sparse) >= 1 - error_budget
-    
-    for (int64_t il = 0; il < n_layer; ++il) {
-        const uint32_t n_head_kv = hparams.n_head_kv(il);
-        for (uint32_t h = 0; h < n_head_kv; ++h) {
-            // Placeholder: keep default 1e-6f threshold
-            // In full implementation, this would be computed from attention statistics
-            kv_self.sparse_v_thresholds[il][h] = 1e-6f;
-        }
-    }
-    
-    kv_self.sparse_v_calib.calibrated = true;
-    kv_self.sparse_v_calib.warmup_tokens = cparams.sparse_v_warmup_tokens;
-    
-    // Log calibration results
-    float mean_threshold = 0.0f;
-    size_t count = 0;
-    for (int64_t il = 0; il < n_layer; ++il) {
-        const uint32_t n_head_kv = hparams.n_head_kv(il);
-        for (uint32_t h = 0; h < n_head_kv; ++h) {
-            mean_threshold += kv_self.sparse_v_thresholds[il][h];
-            ++count;
-        }
-    }
-    mean_threshold /= count;
-    
-    LLAMA_LOG_INFO("%s: sparse V calibration complete - mean threshold=%.2e\n", 
-                   __func__, mean_threshold);
-}
-
 // find an empty slot of size "n_tokens" in the cache
 // updates the cache head
 // Note: On success, it's important that cache.head points
